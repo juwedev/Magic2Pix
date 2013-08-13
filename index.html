@@ -1,0 +1,332 @@
+<!DOCTYPE HTML>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+<link rel="stylesheet" href="css/styles.css" />
+<link href="css/photoswipe.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="js/klass.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true&region=DE"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/code.photoswipe.jquery-3.0.5.min.js"></script>
+<script src="http://www.juwe-media.net/js/jqueryMobile1.3.1.js"></script>
+<script src="http://www.juwe-media.net/js/json2.js"></script>
+<script type="text/javascript">
+ (function(window, $, PhotoSwipe)
+ {
+  $(document).ready(function()
+  {
+   $("#gallery a").photoSwipe(
+   {
+    enableMouseWheel: false,
+    enableKeyboard: false
+   });
+  });
+ }(window, window.jQuery, window.Code.PhotoSwipe));
+</script>
+<script type="text/javascript">
+    function entfernungsBerechnen(meineLongitude,meineLatitude,long1,lat1){
+        erdRadius = 6371;
+        meineLongitude = meineLongitude * (Math.PI/180);
+        meineLatitude = meineLatitude * (Math.PI/180);
+        long1 = long1 * (Math.PI/180);
+        lat1 = lat1 * (Math.PI/180);
+        x0 = meineLongitude * erdRadius * Math.cos(meineLatitude);
+        y0 = meineLatitude * erdRadius;
+        x1 = long1 * erdRadius * Math.cos(lat1);
+        y1 = lat1 * erdRadius;
+        dx = x0 -x1;
+        dy = y0 - y1;
+        d = Math.sqrt((dx*dx) + (dy*dy));
+        if(d < 1){
+            return Math.round(d*1000)+" m";        
+        } else {
+            return Math.round(d*10)/10+" km";
+        }
+    };
+</script>
+<title>Magic2pix Photography</title>
+
+<style type="text/css"> 
+html{
+	height: inherit;
+}
+.footer {
+		position: absolute;
+		bottom: 0px;
+		width: 100%;
+		z-index: 3;	
+}
+</style>
+<script type="text/javascript">
+    	function sendEmail(){
+			var daten = $('#request_form').serialize();
+			$.getJSON("http://www.juwe-media.net/dev/magixapi.php?method=sendEmail&form="+daten+"&jsoncallback=?",				
+				function(data){
+					console.log(data);
+					for(line in data){
+						var answer = data[line];
+						var msg = answer.answer;
+						var state = answer.state;						
+					    if(state == 1){
+							$('#result').html('<center><span style="color:green; background: white;">&nbsp;' + msg +'&nbsp;</span></center>');
+						} else {
+							$('#result').html('<center><span style="color:red; background: white;">&nbsp;' + msg +'&nbsp;</span></center>');
+						}
+					}
+				}
+			);
+		};	
+</script> 
+<script type="text/javascript">
+ (function(window, $, PhotoSwipe)
+ {
+  $(document).ready(function()
+  {
+   $("#gallery a").photoSwipe(
+   {
+    enableMouseWheel: false,
+    enableKeyboard: false
+   });
+  });
+ }(window, window.jQuery, window.Code.PhotoSwipe));
+</script>
+</head>
+<body>
+ 
+<div id="startseite" data-role="page" style=height:100%;"><!-- Beginn Startseite -->    
+    <script type="text/javascript">
+		$(document).delegate('#startseite', 'pageshow', function () {
+		var the_height = ($(window).height() - $(this).find('[data-role="header"]').height() - $(this).find('[data-role="footer"]').height());
+		$(this).height($(window).height()).find('[data-role="content"]').height(the_height + 3);
+		});
+	</script>
+    <div data-role="header" data-theme="a" data-icon="arrow-l" style="height:40px; padding-top:10px;">
+    <center><img src="images/fg.gif" align="middle"></center>
+    </div>
+    <div data-role="content" style="background-image:url('images/mainback.jpg');  background-position:center; background-size: cover;">      
+       <div id="table-wrapper">    
+       <table class="tabelle">
+       <thead>
+       <tr>
+       <th><center><a class="new-button" href="#portrait" data-role="button" data-theme="a" data-inline="true"><img src="images/human_ic.png"></a><br>Photographer me</center></th>
+       <th><center><a class="new-button" href="#pictures" data-role="button" data-theme="a" data-inline="true"><img src="images/kamera_ic.png"></a><br>Gallery</center></th>
+       </tr>
+       <tr>
+       <th><center><a class="new-button" href="#request" data-role="button" data-theme="a" data-inline="true"><img src="images/letter_ic.png"></a><br>Message</center></th>
+       <th><center><a class="new-button" href="location.html" data-role="button" data-theme="a" data-inline="true"><img src="images/location_ic.png"></a><br>Location Finder</center></th>
+       </tr>
+       <tr>
+       <th><center><a class="new-button" href="#twitter" data-role="button" data-theme="a" data-inline="true"><img src="images/twitter_ic.png"></a><br>Twitter</center></th>
+       <th><center><a class="new-button" href="#info" data-role="button" data-theme="a" data-inline="true"><img src="images/help_ic.png"></a><br>Help/Info</center></th>
+       </tr>
+       </tfoot>
+       </table>
+       </div> 
+    </div>
+    <div class="footer" data-role="footer" data-theme="a">
+    <h3>Kontakt | Impressum</h3>
+    </div>
+</div><!-- Ende Startseite -->
+
+<div data-role="page" id="portrait"><!-- Beginn Portrait -->
+   <script type="text/javascript">
+		$(document).delegate('#portrait', 'pageshow', function () {
+		var the_height = ($(window).height() - $(this).find('[data-role="header"]').height() - $(this).find('[data-role="footer"]').height());
+		$(this).height($(window).height()).find('[data-role="content"]').height(the_height + 3);
+		});
+	</script>
+    <div data-role="header" data-theme="a" style="height:30px; padding-top: 10px; padding-bottom:10px;">
+    <a href="#startseite" data-rel="back" data-icon="arrow-l" data-theme="a"></a>
+    <center><img src="images/fg.gif" align="middle"></center>
+    </div>
+    <div data-role="content" style="background-image:url('images/mainback.jpg');  background-position:center; background-size: cover;">
+        <div id="portrait_content">
+         <div style="height:200px;"><img src="images/juwe2.jpg" style="float:left; padding-right:10px;"><h4>About me</h4>For 30 years Photography, the fascination began in childhood. Since 15 years it is professional Studio or on location Photography.<br><br>Regards J&uuml;rgen (Juwe)
+         <p><a href="mailto:juwedevelop@gmail.com" style="text-decoration: none;"><img src="images/email.png" border="0" align="middle"> juwedevelop@gmail.com</a></p>
+         </div>
+         
+         <div style="margin-top: 10px;"><!-- Wrapper beide DIVs -->
+             <div style="float: left; width=50%; height: 220px;">
+                 <h4>Portfolio Photography</h4>
+                 <ul>
+                     <li>Wedding</li>
+                     <li>Fashion</li>
+                     <li>Fetish</li>
+                     <li>Product</li>
+                     <li>Portrait</li>
+                     <li>Commercial</li>
+                 </ul><br>
+             </div>
+             <div style="width:50%; float:left; height: 220px;">
+             	<p><img src="images/farbkreis.png"></p>
+             </div><div style="clear:both;"></div> 
+         </div><!-- wrapper beide DIVs -->    
+             <center>Website: www.magic2pix.de<br><img src="images/lisa2.jpg"></center>
+            
+         </div>
+    </div>
+    <div class="footer" data-role="footer" data-them="a">
+      <h3>Impressum</h3>
+    </div>
+</div><!-- Ende Portrait -->
+
+<div id="request" data-role="page"><!-- Beginn Formular Seite -->	
+    <script type="text/javascript">
+		$(document).delegate('#request', 'pageshow', function () {
+		var the_height = ($(window).height() - $(this).find('[data-role="header"]').height() - $(this).find('[data-role="footer"]').height());
+		$(this).height($(window).height()).find('[data-role="content"]').height(the_height + 3);
+		});
+	</script>
+    <div data-role="header" data-theme="a" style="height:40px; padding-top:10px;">
+     <a href="#startseite" data-rel="back" data-icon="arrow-l" data-theme="a"></a>
+    <center><img src="images/fg.gif" align="middle"></center>
+    </div>
+    <div data-role="content" style="background-image:url('images/req_back.jpg');  background-position:center; background-size: cover;">       
+    
+    <p><center><img src="images/de_kl.gif"> German or &nbsp;<img src="images/en_kl.gif">&nbsp;English</center></p> <center><img src="images/request.gif"></center>
+    <center><h3>Send me a message</h3></center>
+    <div id="result">    
+    </div>
+    <form id="request_form"/>        
+        <input type="hidden" name="stopper" value="fix" data-mini="true"/>
+        <label><strong>Your Name:</strong><br>
+        <input id="name" type="text" name="name" data-mini="true"/>
+        </label><br>
+        <label><strong>Your E-Mail:</strong><br>
+        <input id="email" type="text" name="email" data-mini="true"/>
+        </label><br>
+        <label><strong>Your message:</strong><br>
+        <textarea id="content" name="content" data-mini="true"/>Your Message here..</textarea>
+        </label>
+    </form>
+    <button onClick="sendEmail();">SEND</button>        
+    </div>
+    <div class="footer" data-role="footer" data-them="a">
+      <h3>Impressum</h3>
+    </div>   
+</div><!-- Ende Formular Seite -->
+<!-- Beginn Gallery -->
+<div id="pictures" data-role="page">
+<script type="text/javascript">
+		$(document).delegate('#pictures', 'pageshow', function () {
+		var the_height = ($(window).height() - $(this).find('[data-role="header"]').height() - $(this).find('[data-role="footer"]').height());
+		$(this).height($(window).height()).find('[data-role="content"]').height(the_height + 3);
+		});
+	</script>
+    <div data-role="header" data-theme="a" style="height:40px; padding-bottom:15px;">
+    	<a href="#startseite" data-rel="back" data-icon="arrow-l" data-theme="a"></a>
+    	<center><h3>Magic<span style="color: red">2</span>Pix Photo Gallery</h3></center>
+    </div>
+    <div data-role="content" style="background: #4a4b4a;">
+    	<div id="gallery">
+    		<a href="gallery/full/juwe1.jpg" rel="external"><img alt="Tropical Fruits" src="gallery/thumb/juwe1kl.jpg"></a>
+   			<a href="gallery/full/juwe2.jpg" rel="external"><img alt="Dom. Rep. Beach" src="gallery/thumb/juwe2kl.jpg"></a>
+            <a href="gallery/full/juwe3.jpg" rel="external"><img alt="Sylt Bjoern Dunkerbeck" src="gallery/thumb/juwe3kl.jpg"></a>
+            <a href="gallery/full/juwe4.jpg" rel="external"><img alt="Miss Juwel" src="gallery/thumb/juwe4kl.jpg"></a>
+            <a href="gallery/full/juwe5.jpg" rel="external"><img alt="Sylt" src="gallery/thumb/juwe5kl.jpg"></a>
+            <a href="gallery/full/juwe6.jpg" rel="external"><img alt="Caparete DomRep" src="gallery/thumb/juwe6kl.jpg"></a>
+            <a href="gallery/full/juwe7.jpg" rel="external"><img alt="Old Aeroplane" src="gallery/thumb/juwe7kl.jpg"></a>
+            <a href="gallery/full/juwe8.jpg" rel="external"><img alt="Landscape" src="gallery/thumb/juwe8kl.jpg"></a>
+            <a href="gallery/full/juwe9.jpg" rel="external"><img alt="Ijsselmeer/Holland" src="gallery/thumb/juwe9kl.jpg"></a>
+            <a href="gallery/full/juwe10.jpg" rel="external"><img alt="Fields" src="gallery/thumb/juwe10kl.jpg"></a>
+            <a href="gallery/full/juwe11.jpg" rel="external"><img alt="Miss Juwel" src="gallery/thumb/juwe11kl.jpg"></a>
+            <a href="gallery/full/juwe12.jpg" rel="external"><img alt="Leon" src="gallery/thumb/juwe12kl.jpg"></a>
+            <a href="gallery/full/juwe13.jpg" rel="external"><img alt="Miss Juwel" src="gallery/thumb/juwe13kl.jpg"></a>
+            <a href="gallery/full/juwe14.jpg" rel="external"><img alt="Leon 2years old" src="gallery/thumb/juwe14kl.jpg"></a>
+            <a href="gallery/full/juwe15.jpg" rel="external"><img alt="Oldtimer Triumph" src="gallery/thumb/juwe15kl.jpg"></a>
+            <a href="gallery/full/juwe16.jpg" rel="external"><img alt="Oldtimer Triumph" src="gallery/thumb/juwe16kl.jpg"></a>
+            <a href="gallery/full/juwe17.jpg" rel="external"><img alt="Nuremberg Castle" src="gallery/thumb/juwe17kl.jpg"></a>
+            <a href="gallery/full/juwe18.jpg" rel="external"><img alt="Church Fresco" src="gallery/thumb/juwe18kl.jpg"></a>
+            <a href="gallery/full/juwe19.jpg" rel="external"><img alt="Sylt(Ger)" src="gallery/thumb/juwe19kl.jpg"></a>
+            <a href="gallery/full/juwe20.jpg" rel="external"><img alt="Industrial" src="gallery/thumb/juwe20kl.jpg"></a>
+            <a href="gallery/full/juwe21.jpg" rel="external"><img alt="" src="gallery/thumb/juwe21kl.jpg"></a>
+            <a href="gallery/full/juwe22.jpg" rel="external"><img alt="Lago Maggiore (IT) 2012" src="gallery/thumb/juwe22kl.jpg"></a>
+            <a href="gallery/full/juwe23.jpg" rel="external"><img alt="Isle Fehmarn" src="gallery/thumb/juwe23kl.jpg"></a>
+            <a href="gallery/full/juwe24.jpg" rel="external"><img alt="Powerboat (200kmH, Fehmarn)" src="gallery/thumb/juwe24kl.jpg"></a>
+            <a href="gallery/full/juwe25.jpg" rel="external"><img alt="Lady Noemi" src="gallery/thumb/juwe25kl.jpg"></a>
+            <a href="gallery/full/juwe26.jpg" rel="external"><img alt="Miss Juwel" src="gallery/thumb/juwe26kl.jpg"></a>
+            <a href="gallery/full/juwe27.jpg" rel="external"><img alt="Red Ahorn" src="gallery/thumb/juwe27kl.jpg"></a>
+            <a href="gallery/full/juwe28.jpg" rel="external"><img alt="Sea Silence" src="gallery/thumb/juwe28kl.jpg"></a>
+            <a href="gallery/full/juwe29.jpg" rel="external"><img alt="Lost Cynthia" src="gallery/thumb/juwe29kl.jpg"></a>
+            <a href="gallery/full/juwe30.jpg" rel="external"><img alt="Lisa" src="gallery/thumb/juwe30kl.jpg"></a>
+            <a href="gallery/full/juwe31.jpg" rel="external"><img alt="Lisa " src="gallery/thumb/juwe31kl.jpg"></a>
+            <a href="gallery/full/juwe32.jpg" rel="external"><img alt="Pumpkin Soup" src="gallery/thumb/juwe32kl.jpg"></a>
+            
+        </div>
+    </div>
+    <div data-role="footer">
+    	<h3>Impressum</h3>
+    </div>
+</div><!-- Ende Gallery -->    
+<div data-role="page" id="info" style="height:40px; padding-bottom:15px"><!-- Anfang Info Page -->
+<script type="text/javascript">
+		$(document).delegate('#info', 'pageshow', function () {
+		var the_height = ($(window).height() - $(this).find('[data-role="header"]').height() - $(this).find('[data-role="footer"]').height());
+		$(this).height($(window).height()).find('[data-role="content"]').height(the_height + 3);
+		});
+	</script>
+    <div data-role="header" data-theme="a" data-icon="arrow-l" style="height:40px; padding-top:10px;">
+    <a href="#startseite" data-rel="back" data-icon="arrow-l" data-theme="a"></a>
+    <center><img src="images/fg.gif" align="middle"></center>
+    </div>
+    <div data-role="content" style="background: #4a4b4a;">
+        <center><span style="color:white; text-shadow: 0px;"><h3>Info/About Version 1.1.2013</h3></span></center>
+        <div class="info">
+        	<h3>::Photographer me</h3>
+            <img src="images/juwe3.jpg">&nbsp;Juwe<br><br>
+            Some facts about me the photographer and developer of this app. May be you are interested in. 
+        </div>
+        <div class="info">
+        	<h3>::Gallery</h3>
+            Gallery of various pictures as portraits, fetish, street, people, landscape or products taken over several years.
+            Please notice all pictures are subjects to &copy; Copyright of the photographer. But for any use you can ask the photographer before. A written permission is required. 
+        </div>
+        <div class="info">
+        	<h3>::Photo Location Finder<img src="images/map_ic.png"></h3>
+            This feature is a test and affects the region of Nuremberg. It will suggest you various photo locations for different scenes with a compact description. For use you have to enable <strong>GPS</strong> 		in your device, otherwise the feature will not work.
+            This feature calculates your location and the distance to the several photo shooting locations in the region of Nuremberg.  
+        </div>
+        <div class="info">
+        	<h3>::Message</h3>
+            In this section you can send me directly a message without using an E-Mail client. This could be suggestions for improving this App or nice new photo locations you are missing in the 'Location Finder'. Or otherwise you need a photographer or only want to talk to me. Feel free to contact me :-)  
+        </div>
+    	<div class="info">
+        	<h3>::Twitter&nbsp;<img src="images/twitter_ic_small.png" text-align="middle"></h3>            
+            In this section I try to give you actual informations directly with my Twitter Account. You can add me on Twitter <strong>@juwedevelop</strong>.
+            This App pumps my new Twitter messages directly out of the Twitter API into the App for you. 
+        </div>
+    <p><center><img src="images/gallery_ic.png"></center></p>
+    </div>
+    
+	<div data-role="footer">
+    	<h3>Impressum</h3>
+    </div>
+</div><!-- Ende Info Page -->
+<div data-role="page" id="twitter"><!-- Start Twitter Site -->
+<script type="text/javascript">
+		$(document).delegate('#twitter', 'pageshow', function () {
+		var the_height = ($(window).height() - $(this).find('[data-role="header"]').height() - $(this).find('[data-role="footer"]').height());
+		$(this).height($(window).height()).find('[data-role="content"]').height(the_height + 3);
+		});
+	</script>
+    <div data-role="header" data-theme="a" style="height:40px; padding-top:10px;">
+        <a href="#startseite" data-rel="back" data-icon="arrow-l" data-theme="a"></a>
+        <center><img src="images/fg.gif" align="middle"></center>
+    </div>     
+    <div data-role="content" style="background: black;">
+    <center><img src="images/gallery_ic.png"></center>
+    <div class="twitter_set" style="margin-top: 40px;"><center>
+    <a class="twitter-timeline"  href="https://twitter.com/Juwedevelop"  data-widget-id="280170351281963008">Tweets von @Juwedevelop</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div><!-- twitter container -->    
+    </center>
+    <p><center><br><img src="images/sylt.jpg"></center></p>
+    </div>
+    <div data-role="footer">
+    	<h3>Impressum</h3>
+    </div>
+</div><!-- Ende Twitter Site -->   
+</body>
+</html>
