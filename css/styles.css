@@ -73,13 +73,13 @@ input[textarea] {
 	
 }
 .tabelle {    
-	width: 380px;
+	width: 370px;
 	border-spacing: 24px;	
 }
 #table-wrapper {    
-	padding-top: 40px;
+	padding-top: 20px;
 	margin:0 auto;
-	width: 381px;
+	width: 371px;
 	text-align: center;	
 }
 .ui-btn-inner {
